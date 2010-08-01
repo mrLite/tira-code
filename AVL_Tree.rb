@@ -47,7 +47,7 @@ class AVLTree
     if @root == nil
       @root = uusi
       @root.height = 0
-      return
+      return uusi
     else
       current = @root
       parent = nil
@@ -89,6 +89,12 @@ class TreeItem
     @right = right
     @parent = parent
     @height = height
+  end
+  
+  def balanced?
+    left_child_height = self.left ? self.left.height : -1
+    right_child_height = self.right ? self.right.height : -1
+    (left_child_height - right_child_height).abs <= 1 ? true : false
   end
   
   def to_s
