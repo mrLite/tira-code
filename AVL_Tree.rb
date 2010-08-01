@@ -69,7 +69,15 @@ class AVLTree
     uusi
   end
   
-  def search(key)
+  def search(key, x = self.root)
+    while x != nil and x.key != key
+      if key < x.key
+        x = x.left
+      else
+        x = x.right
+      end
+    end
+    x
   end
 end
 
