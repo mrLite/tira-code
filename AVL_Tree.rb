@@ -3,9 +3,10 @@
 # AVL-puu, eli tasapainotettu binäärihakupuu, johon voidaan tallettaa yksinkertaisia avaimia, kuten kokonaislukuja.
 
 class AVLTree
-  attr_accessor :root
-  def initialize(root = nil)
+  attr_accessor :root, :size
+  def initialize(root = nil, size = 0)
     @root = root
+    @size = size
   end
   
   def height(x = self.root)
@@ -59,6 +60,7 @@ class AVLTree
     if @root == nil
       @root = uusi
       @root.height = 0
+      self.size += 1
       return uusi
     else
       current = @root
@@ -78,6 +80,7 @@ class AVLTree
     else
       parent.right = uusi
     end
+    self.size += 1
     uusi
   end
   
