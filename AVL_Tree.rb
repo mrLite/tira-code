@@ -30,6 +30,18 @@ class AVLTree
     x
   end
   
+  def pred(x = self.root)
+    if x.left != nil
+      return max(x.left)
+    end
+    parent = x.parent
+    while parent != nil and x == parent.left
+      x = parent
+      parent = x.parent
+    end
+    parent
+  end
+  
   def succ(x = self.root)
     if x.right != nil
       return min(x.right)
@@ -39,7 +51,7 @@ class AVLTree
       x = parent
       parent = x.parent
     end
-    x
+    parent
   end
   
   def add(key)
@@ -61,7 +73,7 @@ class AVLTree
       end
       uusi.parent = parent
     end
-    if uusi.key < parent.key
+    if key < parent.key
       parent.left = uusi
     else
       parent.right = uusi
