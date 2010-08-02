@@ -9,6 +9,11 @@ class AVLTree
     @size = size
   end
   
+  def clear
+    @root = nil
+    @size = 0
+  end
+  
   def height(x = self.root)
     if x == nil
       -1
@@ -55,8 +60,51 @@ class AVLTree
     parent
   end
   
+  def rightRotate(x)
+    y = x.left
+    y.parent = x.parent
+    x.parent = y
+    x.left = y.right
+    y.right = x
+    if x == @root
+      @root = y
+    end
+    if x.left != nil
+      x.left.parent = x
+    end
+    y
+  end
+  
+  def leftRotate(x)
+    y = x.right
+    y.parent = x.parent
+    x.parent = y
+    x.right = y.left
+    y.left = x
+    if x == @root
+      @root = y
+    end
+    if x.right != nil
+      x.right.parent = x
+    end
+    y
+  end
+  
+  def rightLeftRotate(x)
+    y = x.right
+    x.right = rightRotate(y)
+    leftRotate(x)
+  end
+  
+  def leftRightRotate(x)
+    y = x.left
+    x.left = leftRotate(y)
+    rightRotate(x)
+  end
+  
   def add(key)
     uusi = TreeItem.new(key)
+    
     if @root == nil
       @root = uusi
       @root.height = 0
@@ -75,14 +123,17 @@ class AVLTree
       end
       uusi.parent = parent
     end
+    
     if key < parent.key
       parent.left = uusi
     else
       parent.right = uusi
     end
+    
     self.size += 1
     uusi
   end
+  alias_method :<<, :add
   
   def search(key, x = self.root)
     while x != nil and x.key != key
@@ -106,10 +157,10 @@ class TreeItem
     @height = height
   end
   
-  def balanced?
+  def balance
     left_child_height = self.left ? self.left.height : -1
     right_child_height = self.right ? self.right.height : -1
-    (left_child_height - right_child_height).abs <= 1 ? true : false
+    left_child_height - right_child_height
   end
   
   def to_s
