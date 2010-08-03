@@ -130,6 +130,15 @@ class AVLTree
       parent.right = uusi
     end
     
+    uusi.height = 0
+    parent = uusi.parent
+    while parent != nil
+      p_left_height = parent.left ? parent.left.height : -1
+      p_right_height = parent.right ? parent.right.height : -1
+      parent.height = [p_left_height, p_right_height].max + 1
+      parent = parent.parent
+    end
+    
     self.size += 1
     uusi
   end
