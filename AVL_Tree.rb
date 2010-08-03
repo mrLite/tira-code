@@ -60,50 +60,6 @@ class AVLTree
     parent
   end
   
-  def rightRotate(x)
-    y = x.left
-    y.parent = x.parent
-    x.parent = y
-    x.left = y.right
-    y.right = x
-    
-    if x.left != nil
-      x.left.parent = x
-    end
-    
-    x.height = x.calculate_height
-    y.height = y.calculate_height
-    y
-  end
-  
-  def leftRotate(x)
-    y = x.right
-    y.parent = x.parent
-    x.parent = y
-    x.right = y.left
-    y.left = x
-    
-    if x.right != nil
-      x.right.parent = x
-    end
-    
-    x.height = x.calculate_height
-    y.height = y.calculate_height
-    y
-  end
-  
-  def rightLeftRotate(x)
-    y = x.right
-    x.right = rightRotate(y)
-    leftRotate(x)
-  end
-  
-  def leftRightRotate(x)
-    y = x.left
-    x.left = leftRotate(y)
-    rightRotate(x)
-  end
-  
   def add(key)
     uusi = TreeItem.new(key)
     
@@ -196,6 +152,53 @@ class AVLTree
     end
     x
   end
+  alias_method :find, :search
+  
+  protected
+  
+  def rightRotate(x)
+    y = x.left
+    y.parent = x.parent
+    x.parent = y
+    x.left = y.right
+    y.right = x
+    
+    if x.left != nil
+      x.left.parent = x
+    end
+    
+    x.height = x.calculate_height
+    y.height = y.calculate_height
+    y
+  end
+  
+  def leftRotate(x)
+    y = x.right
+    y.parent = x.parent
+    x.parent = y
+    x.right = y.left
+    y.left = x
+    
+    if x.right != nil
+      x.right.parent = x
+    end
+    
+    x.height = x.calculate_height
+    y.height = y.calculate_height
+    y
+  end
+  
+  def rightLeftRotate(x)
+    y = x.right
+    x.right = rightRotate(y)
+    leftRotate(x)
+  end
+  
+  def leftRightRotate(x)
+    y = x.left
+    x.left = leftRotate(y)
+    rightRotate(x)
+  end
 end
 
 class TreeItem
@@ -221,6 +224,6 @@ class TreeItem
   end
   
   def to_s
-    "Key: #{@key}, parent: #{@parent}, left child: #{@left}, right child: #{@right}, height: #{@height}"
+    "Key: #{@key}, height: #{@height}"
   end
 end
