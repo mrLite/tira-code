@@ -66,12 +66,13 @@ class AVLTree
     x.parent = y
     x.left = y.right
     y.right = x
-    if x == @root
-      @root = y
-    end
+    
     if x.left != nil
       x.left.parent = x
     end
+    
+    x.height = x.calculate_height
+    y.height = y.calculate_height
     y
   end
   
@@ -81,12 +82,13 @@ class AVLTree
     x.parent = y
     x.right = y.left
     y.left = x
-    if x == @root
-      @root = y
-    end
+    
     if x.right != nil
       x.right.parent = x
     end
+    
+    x.height = x.calculate_height
+    y.height = y.calculate_height
     y
   end
   
@@ -133,9 +135,7 @@ class AVLTree
     uusi.height = 0
     parent = uusi.parent
     while parent != nil
-      p_left_height = parent.left ? parent.left.height : -1
-      p_right_height = parent.right ? parent.right.height : -1
-      parent.height = [p_left_height, p_right_height].max + 1
+      parent.height = parent.calculate_height
       parent = parent.parent
     end
     
@@ -166,10 +166,16 @@ class TreeItem
     @height = height
   end
   
+  def calculate_height
+    left = self.left ? self.left.height : -1
+    right = self.right ? self.right.height : -1
+    [left, right].max + 1
+  end
+  
   def balance
-    left_child_height = self.left ? self.left.height : -1
-    right_child_height = self.right ? self.right.height : -1
-    left_child_height - right_child_height
+    left = self.left ? self.left.height : -1
+    right = self.right ? self.right.height : -1
+    left - right
   end
   
   def to_s
