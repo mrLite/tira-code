@@ -133,13 +133,55 @@ class AVLTree
     end
     
     uusi.height = 0
+    self.size += 1
     parent = uusi.parent
     while parent != nil
+      if parent.balance > 1
+        granpa = parent.parent
+        
+        if parent.left.balance > 0
+          sub_tree = self.rightRotate parent
+        else
+          sub_tree = self.leftRightRotate parent
+        end
+        
+        if granpa == nil
+          @root = sub_tree
+        elsif granpa.left == parent
+          granpa.left = sub_tree
+        else
+          granpa.right = sub_tree
+        end
+        
+        if granpa != nil
+          granpa.height = granpa.calculate_height
+        end
+      elsif parent.balance < -1
+        granpa = parent.parent
+        
+        if parent.right.balance < 0
+          sub_tree = self.leftRotate parent
+        else
+          sub_tree = self.rightLeftRotate parent
+        end
+        
+        if granpa == nil
+          @root = sub_tree
+        elsif granpa.left == parent
+          granpa.left = sub_tree
+        else
+          granpa.right = sub_tree
+        end
+        
+        if granpa != nil
+          granpa.height = granpa.calculate_height
+        end
+      end
+      
       parent.height = parent.calculate_height
       parent = parent.parent
     end
     
-    self.size += 1
     uusi
   end
   alias_method :<<, :add
